@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   mysql:
+    container_name: mysql
     image: mysql:8
     ports:
       - 3306:3306
@@ -10,3 +11,20 @@ services:
       - MYSQL_DATABASE=devops-db
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=root
+    networks:
+      - primeira-network
+
+  nest-api:
+    container_name: nest-api
+    build:
+      context: .
+    ports:
+      - 3001:3000
+    depends_on:
+      - mysql
+    networks:
+      - primeira-network
+
+networks:
+  primeira-network:
+    driver: bridge
